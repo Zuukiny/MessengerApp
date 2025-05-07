@@ -8,16 +8,19 @@ import java.net.Socket;
 import java.rmi.UnknownHostException;
 
 public class ConnectionFactory {
-    private final int DEFAULT_PORT = 7777;
+    public final int DEFAULT_PORT = 7777;
     private final int PORT;
+    private final ConnectionHandler connectionHander;
 
 
-    ConnectionFactory() {
+    ConnectionFactory(ConnectionHandler connectionHandler) {
         this.PORT = DEFAULT_PORT;
+        this.connectionHander = connectionHandler;
     }
 
-    ConnectionFactory(int port) {
+    ConnectionFactory(int port, ConnectionHandler connectionHandler) {
         this.PORT = port;
+        this.connectionHander = connectionHandler;
     }
 
 

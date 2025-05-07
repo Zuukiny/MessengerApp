@@ -5,34 +5,42 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.UnknownHostException;
 
 public class tcpTests {
 
     @Test
-    public void testConnectionFactory() throws UnknownHostException, IOException {
-        ConnectionFactory connectionFactory = new ConnectionFactory(8080);
+    void openServerSocketReadAndWrite() throws IOException {
+        ServerSocket srv = new ServerSocket(7777);
+        Socket newConnection = srv.accept();
+        // got new connection
 
-        System.out.println("Test: opening connection");
-        connectionFactory.acceptNewConnections();
+        // read a byte
+        InputStream is = newConnection.getInputStream();
+        int readValue = is.read();
+        System.out.println("serverSocket side: " + readValue);
+
+        // write
+        OutputStream os = newConnection.getOutputStream();
+        os.write(readValue++);
     }
 
     @Test
-    public void testClientConnection()
-            throws UnknownHostException, IOException {
-
-        Socket clientSocket = new Socket("localhost", 8080);
-
-        // read
-        InputStream clientSocketIn = clientSocket.getInputStream();
-        int message = clientSocketIn.read();
-        System.out.println("received from Server: " + message);
+    void openSocketWriteAndRead() throws IOException, InterruptedException {
+        Socket newConnection = new Socket("localhost", 7777);
 
         // write
-        OutputStream clientSocketOut = clientSocket.getOutputStream();
-        clientSocketOut.write(42);
-        System.out.println("Sent to server: 42");
+        OutputStream os = newConnection.getOutputStream();
+        int value = 42;
+        Thread.sleep(1000*5);
+        os.write(value);
+        System.out.println("sent: " + value);
 
+        // read a byte
+        InputStream is = newConnection.getInputStream();
+        int readValue = is.read();
+        System.out.println("read: " + readValue);
     }
 }
