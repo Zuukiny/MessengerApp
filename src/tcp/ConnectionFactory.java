@@ -4,6 +4,17 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/*
+Handles the actual Socket Infrastructure.
+    - binding to a port
+    - accepting a client connection
+
+Subsequently, it passes the socket to the connectionHandler.
+'Okay, ConnectionHandler, here's a socket. Do your thing'
+ */
+
+
+
 public class ConnectionFactory {
     public static final int DEFAULT_PORT = 7777;
     private final int PORT;

@@ -24,7 +24,7 @@ public class tcpTests {
 
         // write
         OutputStream os = connectionToClient.getOutputStream();
-        os.write(++readValue);
+        os.write(readValue + 1);
     }
 
     @Test
