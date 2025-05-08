@@ -10,6 +10,10 @@ It defines the rules for communication over a single socket connection
 Basically it simulates a protocol (like TCP or UDP) - how data should behave during the communication.
  */
 
+/*
+Simulates communication Protocol:
+Receive a byte, and send it back immediately (Echo).
+ */
 public class EchoServer implements ConnectionHandler{
     @Override
     public void handleConnection(InputStream is, OutputStream os) throws IOException {
