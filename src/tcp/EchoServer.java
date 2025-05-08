@@ -13,7 +13,7 @@ Basically it simulates a protocol (like TCP or UDP) - how data should behave dur
 public class EchoServer implements ConnectionHandler{
     @Override
     public void handleConnection(InputStream is, OutputStream os) throws IOException {
-        int isMessage = (is.read());
+        int isMessage = is.read();
 
         os.write(isMessage);
 
