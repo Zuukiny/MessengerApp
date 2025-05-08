@@ -13,8 +13,6 @@ Subsequently, it passes the socket to the connectionHandler.
 'Okay, ConnectionHandler, here's a socket. Do your thing'
  */
 
-
-
 public class ConnectionFactory {
     public static final int DEFAULT_PORT = 7777;
     private final int PORT;
