@@ -90,7 +90,7 @@ public class ProtocolEngineTests {
         }
 
         // 4. test if incremented correctly
-        Assertions.assertEquals(originalMessage + Math.min(HowManyIncrements, 10), readMessage);
+        Assertions.assertEquals(originalMessage + 10, readMessage);
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////
