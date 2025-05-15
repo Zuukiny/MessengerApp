@@ -193,13 +193,12 @@ public class ProtocolEngineTests {
         //      - Long
 
         intReadValue = dis.readInt();
-        longReadValue = dis.readLong();
-        dos.flush();
-
         System.out.println("read Int: " + intReadValue);
+        stringReadValue = dis.readUTF();
         System.out.println("read String: " + stringReadValue);
+        longReadValue = dis.readLong();
         System.out.println("read Long: " + longReadValue);
-
+        dos.flush();
 
         // Assertion tests
         Assertions.assertNotEquals(intSendValue, intReadValue);
