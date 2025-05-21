@@ -6,7 +6,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class SocketTest {
+public class SocketTest2 {
 
     @Test
     public void TesterPeerTest() throws UnknownHostException, IOException {
@@ -26,5 +26,7 @@ public class SocketTest {
 
         ///  task 3; read UTF-String and print via System.out.print()
         System.out.println("Read String: " + dis.readUTF());
+
+        clientSocket.close();
     }
 }
