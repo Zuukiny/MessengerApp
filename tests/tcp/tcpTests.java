@@ -13,33 +13,33 @@ public class tcpTests {
 
     @Test
     void openServerSocketReadAndWrite() throws IOException {
-        ServerSocket srv = new ServerSocket(7777);
-        Socket newConnection = srv.accept();
+        ServerSocket server = new ServerSocket(7777);
+        Socket connectionToClient = server.accept();
         // got new connection
 
         // read a byte
-        InputStream is = newConnection.getInputStream();
+        InputStream is = connectionToClient.getInputStream();
         int readValue = is.read();
         System.out.println("serverSocket side: " + readValue);
 
         // write
-        OutputStream os = newConnection.getOutputStream();
-        os.write(readValue++);
+        OutputStream os = connectionToClient.getOutputStream();
+        os.write(readValue + 1);
     }
 
     @Test
     void openSocketWriteAndRead() throws IOException, InterruptedException {
-        Socket newConnection = new Socket("localhost", 7777);
+        Socket clientConnection = new Socket("localhost", 7777);
 
         // write
-        OutputStream os = newConnection.getOutputStream();
+        OutputStream os = clientConnection.getOutputStream();
         int value = 42;
         Thread.sleep(1000*5);
         os.write(value);
         System.out.println("sent: " + value);
 
         // read a byte
-        InputStream is = newConnection.getInputStream();
+        InputStream is = clientConnection.getInputStream();
         int readValue = is.read();
         System.out.println("read: " + readValue);
     }
