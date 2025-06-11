@@ -16,7 +16,7 @@ public class SerializationTests {
     public void arrayTest() throws IOException {
         MySerialization ms = new MySerialization();
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        int[] sample = new int[]{1,2,3,300};
+        int[] sample = new int[]{1, 2, 200, 1445, 1234567890};
         ms.serialize(sample, os);
         byte[] serializedData = os.toByteArray();
         InputStream is = new ByteArrayInputStream(serializedData);
