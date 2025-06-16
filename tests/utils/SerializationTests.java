@@ -4,11 +4,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
 
 public class SerializationTests {
 
-
+    private String sampleData = "Hallo Welt, hier ist ein Java Programm. Ich wurde von der Zeile aus in eine Datei geschrieben. Das ist schon zeimlich Banonkas :)";;
+    private File sourceFile;
+    private File targetFile;
 
     @Test
     public void arrayTest() throws IOException {
@@ -23,32 +27,50 @@ public class SerializationTests {
     }
 
     @Test
-    public void fileTest1() throws IOException {
-        String sampleData = "Hallo Welt, hier ist ein Java Programm. Ich wurde von der Zeile aus in eine Datei geschrieben. Das ist schon zeimlich Banonkas :)";
+    public void serverFileTest() throws IOException {
+        // Create File with some sample Data
         String fileNameSource = "sourceFile.txt";
-        String fileNameTarget = "targetFile.txt";
+        sourceFile = new File(fileNameSource);
 
-        // Create temporary file and fill it with some sampleData
         DataOutputStream daos = new DataOutputStream(new FileOutputStream(fileNameSource));
         daos.writeUTF(sampleData);
-        daos.close();
 
 
-        // Create two permanent files
-        File sourceFile = new File(fileNameSource);
-        File targetFile = new File(fileNameTarget);
+        // Create Serversocket & Outputstream
+        ServerSocket serverSocket = new ServerSocket(7777);
+        Socket clientConnection = serverSocket.accept();
+
+        OutputStream os = clientConnection.getOutputStream();
+
+        // Use serialization method to write file content to the OutputStream
         MySerialization ms = new MySerialization();
-
-        Socket clientSocket = new Socket("localhost", 7777);
-
-
-        // serialize data of one file into DataOutputStream
-        OutputStream os = clientSocket.getOutputStream();
-        InputStream is = clientSocket.getInputStream();
-
         ms.serializeFile(sourceFile, os);
-        ms.deserialize(is);
 
+        // Test
+        DataInputStream dis = new DataInputStream(new FileInputStream(sourceFile));
+        String sourceFileAsString = dis.readUTF();
+
+        Assertions.assertEquals(sampleData, sourceFileAsString);
     }
 
+    @Test
+    public void clientFileTest() throws IOException {
+        // Create File where content is retrieved by a server
+        String fileNameTarget = "targetFile.txt";
+        targetFile = new File(fileNameTarget);
+
+        // Create ClientSocket & InputStream
+        Socket clientSocket = new Socket("localhost", 7777);
+        InputStream is = clientSocket.getInputStream();
+
+        // Use deserialization method to read file content of sourceFile and copy
+        MySerialization ms = new MySerialization();
+        ms.deserializeFile(targetFile, is);
+
+        // Test
+        DataInputStream dis = new DataInputStream(new FileInputStream(targetFile));
+        String targetFileAsString = dis.readUTF();
+
+        Assertions.assertEquals(sampleData, targetFileAsString);
+    }
 }
