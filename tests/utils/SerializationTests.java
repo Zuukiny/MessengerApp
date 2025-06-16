@@ -10,7 +10,7 @@ import java.nio.file.Files;
 
 public class SerializationTests {
 
-    private String sampleData = "Hallo Welt, hier ist ein Java Programm. Ich wurde von der Zeile aus in eine Datei geschrieben. Das ist schon zeimlich Banonkas :)";;
+    private String sampleData = "Hallo Welt, hier ist ein Java Programm. Ich wurde von der Zeile aus in eine Datei geschrieben. Das ist schon zeimlich Banonkas :)";
     private File sourceFile;
     private File targetFile;
 
