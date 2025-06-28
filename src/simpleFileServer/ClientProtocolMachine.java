@@ -5,10 +5,17 @@ import java.net.Socket;
 
 public class ClientProtocolMachine {
     Socket clientSocket;
+    InputStream inputStream;
+    OutputStream outputStream;
+
+    public ClientProtocolMachine(InputStream inputStream, OutputStream outputStream) {
+        this.inputStream = inputStream;
+        this.outputStream = outputStream;
+    }
 
     public void getFile(String fileName) throws IOException {
-        DataOutputStream dos = new DataOutputStream(clientSocket.getOutputStream());
-        DataInputStream dis = new DataInputStream(clientSocket.getInputStream());
+        DataOutputStream dos = new DataOutputStream(outputStream);
+        DataInputStream dis = new DataInputStream(inputStream);
 
         PDU.writeGETPDU(dos, fileName);
 
@@ -16,13 +23,13 @@ public class ClientProtocolMachine {
         byte version = dis.readByte();
         byte command = dis.readByte();
 
-        if (command == PDU.OK) {
+        if (command == PDU.OK && version == 1) {
             // Read next few info bytes of PDU
             String fileNameReceived = dis.readUTF();
             long messageLength = dis.readLong();
 
             // Prepare to write into file
-            File fileToWriteTo = new File(fileName + "_Copy");
+            File fileToWriteTo = new File("Copy_" + fileNameReceived);
             DataOutputStream dosIntoFile = new DataOutputStream(new FileOutputStream(fileToWriteTo));
             byte[] buffer = new byte[1024];
             int bytesRead;
@@ -35,12 +42,16 @@ public class ClientProtocolMachine {
                 totalRead += bytesRead;
             }
         }
+
+        if (command == PDU.ERROR) {
+            throw new FileNotFoundException("The file to search for hasn't been found!");
+        }
     }
 
     public void putFile(String fileName) throws FileNotFoundException, IOException {
         File fileToSend = new File(fileName);
 
-        DataOutputStream dos = new DataOutputStream(clientSocket.getOutputStream());
+        DataOutputStream dos = new DataOutputStream(outputStream);
         DataInputStream dis = new DataInputStream(new FileInputStream(fileToSend));
 
         byte[] buffer = new byte[1024];
