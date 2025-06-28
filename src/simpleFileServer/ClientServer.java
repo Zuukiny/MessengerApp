@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ClientServer {
+public class ClientServer implements Runnable{
     private final Socket socket;
     private final DataInputStream dis;
     private final DataOutputStream dos;
@@ -13,6 +13,15 @@ public class ClientServer {
         this.socket = socket;
         this.dis = new DataInputStream(socket.getInputStream());
         this.dos = new DataOutputStream(socket.getOutputStream());
+    }
+
+    @Override
+    public void run() {
+        try {
+            handle();
+        } catch (IOException e) {
+            System.err.println("Fehler bei Client-Verbindung: " + e.getMessage());
+        }
     }
 
     public void handle() throws IOException {
