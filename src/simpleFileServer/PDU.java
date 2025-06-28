@@ -13,8 +13,9 @@ public abstract class PDU {
     public static final byte OK = 0x03;
 
     // Error Codes
-    public static final int FILE_NOT_FOUND = 0x64; // 100
-    public static final int INVALID_COMMAND = 0x65; // 101
+    public static final int INVALID_PROTOCOL_VERSION = 0x64; // 100
+    public static final int FILE_NOT_FOUND = 0x65; // 101
+    public static final int INVALID_COMMAND = 0x66; // 102
 
     public static void writeGETPDU(DataOutputStream daos, String fileName) throws IOException {
         daos.writeByte(PROTOCOL_VERSION);
@@ -32,7 +33,7 @@ public abstract class PDU {
         daos.writeByte(PROTOCOL_VERSION);
         daos.writeByte(ERROR);
         daos.writeUTF(fileName);
-        daos.write(errorCode);
+        daos.writeInt(errorCode);
         daos.writeUTF(errorMessage);
     }
 
