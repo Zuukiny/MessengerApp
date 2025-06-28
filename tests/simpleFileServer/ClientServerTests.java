@@ -13,10 +13,14 @@ public class ClientServerTests {
     public void testServer() throws IOException {
         ServerSocket serverSocket = new ServerSocket(7777);
 
-        Socket clientSocket = serverSocket.accept();
 
-        ClientServer server = new ClientServer(clientSocket);
-        server.handle();
+        while (true) {
+            // 🔁 Blockiert, bis ein Client sich verbindet
+            Socket clientSocket = serverSocket.accept();
 
+            // 🧵 Starte neuen Thread für diesen Client
+            ClientServer handler = new ClientServer(clientSocket);
+            new Thread(handler).start();
+        }
     }
 }

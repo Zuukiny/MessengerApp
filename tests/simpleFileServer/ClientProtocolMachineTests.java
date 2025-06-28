@@ -9,14 +9,13 @@ public class ClientProtocolMachineTests {
 
     @Test
     public void sendFileToTesterPeer() throws IOException {
-        Socket clientSocket = new Socket("localhost", 4444);
+        Socket clientSocket = new Socket("localhost", 7777);
 
         ClientProtocolMachine client = new ClientProtocolMachine(clientSocket.getInputStream(), clientSocket.getOutputStream());
 
-        String fileToSend = "resources/test.txt";
+        String fileToSend = "sourceFile.txt";
         client.putFile(fileToSend);
 
-        ///  Test: See BNTesterPeer
     }
 
     @Test
@@ -25,9 +24,8 @@ public class ClientProtocolMachineTests {
 
         ClientProtocolMachine client = new ClientProtocolMachine(clientSocket.getInputStream(), clientSocket.getOutputStream());
 
-        String fileToReceive = "sourceFile.txt";
+        String fileToReceive = "LICENSE";
         client.getFile(fileToReceive);
 
-        ///  Test: See BNTesterPeer
     }
 }
